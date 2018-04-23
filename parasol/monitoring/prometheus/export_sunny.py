@@ -8,6 +8,7 @@ import time
 import sys
 
 logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 class SunnyWebboxCollector(object):
@@ -111,6 +112,8 @@ if __name__ == '__main__':
 	parser.add_argument('--listen_port', type=int, action='store', required=True)
 
 	args = parser.parse_args()
+
+	logger.info("inititalizing...")
 
 	REGISTRY.register(SunnyWebboxCollector(args))
 	logger.info("initialized collector")
