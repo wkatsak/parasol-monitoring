@@ -3,7 +3,12 @@ from prometheus_client.core import GaugeMetricFamily, REGISTRY
 from deps.SunnyWebBox import SunnyWebBoxHTTP
 
 import argparse
+import logging
 import time
+import sys
+
+logger = logging.getLogger()
+logger.addHandler(logging.StreamHandler(sys.stdout))
 
 class SunnyWebboxCollector(object):
 	VALUE_NAME_PREFIXES = {
@@ -108,8 +113,10 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 	REGISTRY.register(SunnyWebboxCollector(args))
+	logger.info("initialized collector")
 
 	start_http_server(args.listen_port)
+	logger.info("listening on http port {}".format(args.listen_port))
 
 	while True:
 		time.sleep(1)
