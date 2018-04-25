@@ -1,17 +1,10 @@
-from prometheus_client import start_http_server
-from prometheus_client.core import GaugeMetricFamily, REGISTRY
+from common.exporter import ParasolMetricExporter, ParasolCollectorBase
 from deps.SunnyWebBox import SunnyWebBoxHTTP
+from prometheus_client.core import GaugeMetricFamily
 
-import argparse
-import logging
-import time
-import sys
+class SunnyWebboxCollector(ParasolCollectorBase):
+	name = "Sunny Webbox Collector"
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler(sys.stdout))
-
-class SunnyWebboxCollector(object):
 	VALUE_NAME_PREFIXES = {
 		'SE' : 'sunny_sensorbox',
 		'SI' : 'sunny_island',
@@ -106,20 +99,9 @@ class SunnyWebboxCollector(object):
 			yield m
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument('--webbox_address', type=str, action='store', required=True)
-	parser.add_argument('--webbox_password', type=str, action='store', default='')
-	parser.add_argument('--listen_port', type=int, action='store', required=True)
+	exporter = ParasolMetricExporter(name="Sunny Webbox Exporter")
+	exporter.add_argument('--webbox_address', type=str, action='store', required=True)
+	exporter.add_argument('--webbox_password', type=str, action='store', default='')
+	exporter.add_collector(SunnyWebboxCollector)
 
-	args = parser.parse_args()
-
-	logger.info("inititalizing...")
-
-	REGISTRY.register(SunnyWebboxCollector(args))
-	logger.info("initialized collector")
-
-	start_http_server(args.listen_port)
-	logger.info("listening on http port {}".format(args.listen_port))
-
-	while True:
-		time.sleep(1)
+	exporter.start()
