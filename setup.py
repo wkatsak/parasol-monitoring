@@ -8,7 +8,12 @@ setup(
 	description="Parasol Monitoring Scripts (Prometheus Exporters)",
 	author="William Katsak <wkatsak@cs.rutgers.edu>",
 	packages=find_packages(),
-	install_requires=["prometheus_client"],
+	install_requires=[
+		"prometheus_client",
+		"numpy",
+		"minimalmodbus",
+		"pymodbus"
+	],
 	entry_points= {
 		'console_scripts' : [
 			'sunny_exporter = parasol_monitoring.exporters.sunny_exporter:main'
