@@ -10,8 +10,8 @@ RUN pip install prometheus_client
 
 RUN mkdir /parasol-monitoring
 
-ADD parasol/monitoring/prometheus/deps/*.py /parasol-monitoring/deps/
-ADD parasol/monitoring/prometheus/export_sunny.py /parasol-monitoring/
+ADD parasol_monitoring/deps /parasol-monitoring/deps/
+ADD parasol_monitoring/export_sunny.py /parasol-monitoring/
 
 EXPOSE 9100/tcp
 
