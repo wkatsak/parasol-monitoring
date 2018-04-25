@@ -8,11 +8,12 @@ RUN apt-get -y install python python-pip
 RUN pip install pip --upgrade
 RUN pip install prometheus_client
 
-RUN mkdir /parasol-monitoring
+ADD parasol_monitoring /parasol_monitoring_install/parasol_monitoring
+ADD setup.py /parasol_monitoring_install/
 
-ADD parasol_monitoring/deps /parasol-monitoring/deps/
-ADD parasol_monitoring/export_sunny.py /parasol-monitoring/
+#RUN pip install -e /parasol_monitoring
+RUN bash -c 'cd /parasol_monitoring_install && python setup.py install'
 
 EXPOSE 9100/tcp
 
-CMD python /parasol-monitoring/export_sunny.py --webbox_address $WEBBOX_ADDRESS --listen_port 9100
+CMD /usr/local/bin/sunny_exporter --webbox_address $WEBBOX_ADDRESS --port 9100

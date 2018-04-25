@@ -1,5 +1,5 @@
-from common.exporter import ParasolMetricExporter, ParasolCollectorBase
-from deps.SunnyWebBox import SunnyWebBoxHTTP
+from ..common.exporter import ParasolCollectorBase, ParasolMetricExporter
+from ..deps.SunnyWebBox import SunnyWebBoxHTTP
 from prometheus_client.core import GaugeMetricFamily
 
 class SunnyWebboxCollector(ParasolCollectorBase):
@@ -55,9 +55,6 @@ class SunnyWebboxCollector(ParasolCollectorBase):
 		}
 	}
 
-	def __init__(self, args):
-		self.args = args
-
 	def collect(self):
 		# hold the metrics here while collecting them
 		metrics = []
@@ -98,10 +95,12 @@ class SunnyWebboxCollector(ParasolCollectorBase):
 		for m in metrics:
 			yield m
 
-if __name__ == '__main__':
+def main():
 	exporter = ParasolMetricExporter(name="Sunny Webbox Exporter")
 	exporter.add_argument('--webbox_address', type=str, action='store', required=True)
 	exporter.add_argument('--webbox_password', type=str, action='store', default='')
 	exporter.add_collector(SunnyWebboxCollector)
-
 	exporter.start()
+
+if __name__ == "__main__":
+	main()
