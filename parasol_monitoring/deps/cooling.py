@@ -57,13 +57,14 @@ class TKS3000(object):
 			'FanSpeed',
 			'MaxFanSpeed',
 			'TempDiffAC',
-			'TempDeltaAC'
+			'TempDeltaAC',
 			'ExternalDevices',
 		]
 
 		registers = readModbusRegisters(client, unit=self.modbusId, schema=self.schema, addrs=addrs)
 
 		results = {}
+		print registers
 
 		results['TempIndoor']  = registers['TempIndoor']
 		results['TempOutdoor'] = registers['TempOutdoor']

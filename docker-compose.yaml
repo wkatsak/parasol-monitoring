@@ -30,16 +30,27 @@ services:
         source: /etc/parasol-config/prometheus
         target: /etc/prometheus
 
-  parasol-monitoring-prometheus:
+  parasol-monitoring-sunny:
     image: parasol/monitoring-prometheus
-    container_name: parasol-monitoring-prometheus
+    container_name: parasol-monitoring-sunny
     depends_on:
       - prometheus
     restart: always
     ports:
       - "9100:9100"
-    environment:
-      WEBBOX_ADDRESS: 192.168.1.50
+    entrypoint: /usr/local/bin/sunny_exporter --webbox_address 192.168.1.50 --port 9100
+
+  parasol-monitoring-cooling:
+    image: parasol/monitoring-prometheus
+    container_name: parasol-monitoring-cooling
+    depends_on:
+      - prometheus
+    restart: always
+    ports:
+      - "9101:9101"
+    devices:
+      - "/dev/ttyS0:/dev/ttyS0"
+    entrypoint: /usr/local/bin/cooling_exporter --serial_port /dev/ttyS0 --port 9101
 
   grafana:
     image: grafana/grafana

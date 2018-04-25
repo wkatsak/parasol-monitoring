@@ -13,7 +13,3 @@ ADD setup.py /parasol_monitoring_install/
 
 #RUN pip install -e /parasol_monitoring
 RUN bash -c 'cd /parasol_monitoring_install && python setup.py install'
-
-EXPOSE 9100/tcp
-
-CMD /usr/local/bin/sunny_exporter --webbox_address $WEBBOX_ADDRESS --port 9100

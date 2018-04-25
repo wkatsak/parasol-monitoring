@@ -16,7 +16,8 @@ setup(
 	],
 	entry_points= {
 		'console_scripts' : [
-			'sunny_exporter = parasol_monitoring.exporters.sunny_exporter:main'
+			'sunny_exporter = parasol_monitoring.exporters.sunny_exporter:main',
+			'cooling_exporter = parasol_monitoring.exporters.cooling_exporter:main',
 		]
 	}
 )

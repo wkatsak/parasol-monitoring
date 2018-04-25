@@ -26,14 +26,19 @@ class TKS3000Collector(ParasolCollectorBase):
 		tks3000 = TKS3000(self.args.serial_port)
 		data = tks3000.getTKSValues()
 
-		metrics = {}
+		metrics = []
 
 		for key in data:
 			if key not in self.VALUE_NAME_MAPPINGS:
 				continue
 
-			result_key = "{}_{}".format(self.VALUE_NAME_PREFIX, self.VALUE_NAME_MAPPINGS[key])
-			metrics[result_key] = data[key]
+			metricName = "{}_{}".format(self.VALUE_NAME_PREFIX, self.VALUE_NAME_MAPPINGS[key])
+			metricHelpText = "{} from TKS3000".format(key)
+			metricValue = data[key]
+
+			m = GaugeMetricFamily(metricName, metricHelpText)
+			m.add_metric([], metricValue)
+			metrics.append(m)
 
 		for m in metrics:
 			yield m
